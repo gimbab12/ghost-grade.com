@@ -1,0 +1,17 @@
+{
+  "name": "잠자고 있던 본능을 깨워라",
+  "short_name": "본능을 깨워라",
+  "description": "내면에 잠자고 있던 본능과 자아를 분석하는 공포 테스트",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

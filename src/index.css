@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-horror-dark: #050507;
+  --color-horror-card: #0c0c10;
+  --color-horror-red: #9b1c1c;
+  --color-horror-red-bright: #e53e3e;
+  --color-horror-purple: #4c1d95;
+  --color-horror-purple-bright: #8b5cf6;
+  
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 4px rgba(155, 28, 28, 0.6));
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.3;
+    filter: none;
+  }
+}
+
+.animate-flicker {
+  animation: flicker 6s infinite alternate;
+}
+
+/* Custom scrollbar for gothic look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050507;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f1f23;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9b1c1c;
+}
+
+body {
+  background-color: #050507;
+  color: #e2e8f0;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+

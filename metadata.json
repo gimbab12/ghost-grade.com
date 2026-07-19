@@ -1,0 +1,10 @@
+{
+  "name": "잠자고 있던 본능을 깨워라",
+  "description": "사진 업로드와 5가지 소름 끼치는 질문을 통해 당신 내면에 숨겨진 또 다른 존재(1~4등급)를 분석하는 공포 테스트. 영어, 한국어, 중국어, 일본어 지원.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
