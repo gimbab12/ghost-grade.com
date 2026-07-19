@@ -16,6 +16,8 @@ import {
   Sparkles,
   AlertCircle,
   Eye,
+  EyeOff,
+  Key,
   Globe,
   Download
 } from "lucide-react";
