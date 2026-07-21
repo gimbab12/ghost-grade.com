@@ -29,6 +29,7 @@ import { HeartbeatSynth } from "./utils/audio";
 // Import the gorgeous custom gothic card image matcher
 import { getCharacterImage } from "./assets/images";
 import { KakaoAd } from "./components/KakaoAd";
+import { AdSense } from "./components/AdSense";
 
 // Lazy initialize heartbeat synthesizer
 const synth = new HeartbeatSynth();
@@ -1111,8 +1112,11 @@ ${window.location.href}`;
         </div>
       </main>
       
-      {/* Kakao AdFit Bottom Ad Section */}
-      <KakaoAd />
+      {/* Google AdSense & Kakao AdFit Bottom Ad Section */}
+      <div className="flex flex-col items-center justify-center gap-2 max-w-lg mx-auto px-4 w-full">
+        <AdSense />
+        <KakaoAd />
+      </div>
 
       {/* Footer */}
       <footer className="border-t border-zinc-950 bg-black/50 p-4 text-center">
