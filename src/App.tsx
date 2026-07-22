@@ -70,6 +70,16 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
 
+  // Toast Notification State
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" | "info" } | null>(null);
+
+  const showToast = (message: string, type: "success" | "error" | "info" = "success") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
+
   // PWA Install State & Device Detection
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -442,10 +452,11 @@ export default function App() {
     setShareCopied(false);
   };
 
-  // Build beautiful share text
+  // Build beautiful share text for individual results
   const handleShare = () => {
     if (!result) return;
     const gradeSymbol = "⭐".repeat(5 - result.grade);
+    const shareUrl = window.location.origin;
     const textToCopy = `🩸 ${t.title} - 공포 등급 테스트 🩸
 
 내가 다시 태어난다면 가지게 될 내면의 본모습...
@@ -457,13 +468,64 @@ export default function App() {
 "${result.prophecy.substring(0, 100)}..."
 
 지금 당신의 진짜 아우라를 확인해보세요:
-${window.location.href}`;
+${shareUrl}`;
 
-    navigator.clipboard.writeText(textToCopy).then(() => {
+    if (navigator.share) {
+      navigator.share({
+        title: `${t.title} - ${result.characterName}`,
+        text: `내 공포 위험 등급: ${result.grade}등급 [${result.characterName}]!\n지금 당신의 진짜 아우라를 확인해보세요.`,
+        url: shareUrl,
+      })
+      .then(() => {
+        showToast("공유창이 성공적으로 열렸습니다!", "success");
+      })
+      .catch((err) => {
+        console.warn("Share failed, falling back to copy to clipboard:", err);
+        if (err.name !== "AbortError") {
+          copyToClipboard(textToCopy);
+        }
+      });
+    } else {
+      copyToClipboard(textToCopy);
+    }
+  };
+
+  // Share the general application link (from Header or Intro screen)
+  const handleShareApp = () => {
+    const shareUrl = window.location.origin;
+    const textToCopy = `🩸 ${t.title} - 공포 심리 테스트 🩸
+
+내 얼굴 사진과 어두운 심리 질문으로 분석하는 나의 숨겨진 공포 자아와 영혼 등급!
+지금 당신의 진짜 아우라를 확인해보세요:
+${shareUrl}`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: t.title,
+        text: "내 얼굴 사진과 어두운 심리 질문으로 분석하는 나의 숨겨진 공포 자아와 영혼 등급!\n지금 당신의 진짜 아우라를 확인해보세요.",
+        url: shareUrl,
+      })
+      .then(() => {
+        showToast("공유창이 성공적으로 열렸습니다!", "success");
+      })
+      .catch((err) => {
+        console.warn("Share failed, falling back to copy to clipboard:", err);
+        if (err.name !== "AbortError") {
+          copyToClipboard(textToCopy);
+        }
+      });
+    } else {
+      copyToClipboard(textToCopy);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
       setShareCopied(true);
+      showToast("내용과 링크가 클립보드에 복사되었습니다!", "success");
       setTimeout(() => setShareCopied(false), 2000);
     }).catch(() => {
-      alert("클립보드 복사에 실패했습니다. 아래 내용을 직접 복사하세요:\n\n" + textToCopy);
+      showToast("클립보드 복사에 실패했습니다.", "error");
     });
   };
 
@@ -539,6 +601,16 @@ ${window.location.href}`;
                 <option value="ja">日本語</option>
               </select>
             </div>
+            {/* Share Button */}
+            <button
+              id="header-share-btn"
+              onClick={handleShareApp}
+              className="text-zinc-500 hover:text-horror-red-bright transition-colors p-2 rounded-full border border-zinc-900 bg-black/40 hover:border-horror-red/40"
+              title="공유하기"
+            >
+              <Share2 className="w-4 h-4" />
+            </button>
+
             {/* Audio Toggle Button */}
             <button
               id="audio-toggle-btn"
@@ -813,6 +885,17 @@ ${window.location.href}`;
                   {gender && image && (
                     <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   )}
+                </button>
+
+                {/* Share App Link Button */}
+                <button
+                  id="intro-share-btn"
+                  type="button"
+                  onClick={handleShareApp}
+                  className="w-full py-3 bg-black/40 border border-zinc-900 hover:border-zinc-800 text-zinc-400 hover:text-white rounded-xl text-xs font-mono font-medium transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-horror-red-bright" />
+                  테스트 링크 친구에게 공유하기
                 </button>
               </motion.div>
             )}
@@ -1165,6 +1248,33 @@ ${window.location.href}`;
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Gothic Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-sm px-4"
+          >
+            <div className={`p-4 rounded-xl border flex items-center gap-3 backdrop-blur-md shadow-2xl ${
+              toast.type === "error"
+                ? "bg-red-950/90 border-horror-red text-horror-red-bright"
+                : toast.type === "info"
+                ? "bg-zinc-950/90 border-zinc-800 text-zinc-300"
+                : "bg-black/90 border-emerald-900/60 text-emerald-400"
+            }`}>
+              {toast.type === "error" ? (
+                <AlertCircle className="w-4 h-4 shrink-0" />
+              ) : (
+                <Sparkles className="w-4 h-4 shrink-0 text-horror-red-bright animate-pulse" />
+              )}
+              <span className="text-xs font-mono tracking-wide">{toast.message}</span>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

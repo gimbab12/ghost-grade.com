@@ -54,3 +54,20 @@ body {
   overflow-x: hidden;
 }
 
+/* 카카오 애드핏 & 구글 애드센스 광고 영역 모서리 라운딩 제거 (애드핏 심사 규정 준수) */
+ins.kakao_ad_area,
+ins.kakao_ad_area *,
+ins.kakao_ad_area iframe,
+ins.adsbygoogle,
+ins.adsbygoogle *,
+ins.adsbygoogle iframe,
+#kakao-adfit-container,
+#google-adsense-container {
+  border-radius: 0px !important;
+  -webkit-border-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+

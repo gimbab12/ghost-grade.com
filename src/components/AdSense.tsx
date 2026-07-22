@@ -35,7 +35,8 @@ export function AdSense({
       </span>
       <div 
         id="google-adsense-container"
-        className="w-full max-w-lg min-h-[100px] flex items-center justify-center bg-black/35 rounded-xl overflow-hidden border border-zinc-900/60 p-2 shadow-inner shadow-black/80"
+        className="w-full max-w-lg min-h-[100px] flex items-center justify-center bg-black/35 rounded-none border border-zinc-900/60 p-2 shadow-inner shadow-black/80"
+        style={{ borderRadius: "0px" }}
       >
         <ins
           className="adsbygoogle"

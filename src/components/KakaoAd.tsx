@@ -27,8 +27,8 @@ export function KakaoAd() {
       </span>
       <div 
         id="kakao-adfit-container"
-        className="flex items-center justify-center min-h-[50px] bg-black/10 rounded-lg overflow-hidden border border-zinc-900/40 p-1"
-        style={{ width: "320px", height: "50px" }}
+        className="flex items-center justify-center min-h-[50px] bg-black/10 rounded-none border border-zinc-900/40 p-1"
+        style={{ width: "320px", height: "50px", borderRadius: "0px" }}
       >
         <ins
           className="kakao_ad_area"
